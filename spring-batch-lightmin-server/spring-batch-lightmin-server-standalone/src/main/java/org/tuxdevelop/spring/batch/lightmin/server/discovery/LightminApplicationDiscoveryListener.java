@@ -9,6 +9,7 @@ import org.springframework.cloud.client.discovery.event.HeartbeatMonitor;
 import org.springframework.cloud.client.discovery.event.InstanceRegisteredEvent;
 import org.springframework.cloud.client.discovery.event.ParentHeartbeatEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.style.ToStringCreator;
 import org.tuxdevelop.spring.batch.lightmin.discovery.DiscoveryBase;
 import org.tuxdevelop.spring.batch.lightmin.exception.SpringBatchLightminApplicationException;
 
@@ -73,14 +74,18 @@ public class LightminApplicationDiscoveryListener {
     }
 
     private void register(final ServiceInstance serviceInstance) {
+        ToStringCreator toStringer = new ToStringCreator(serviceInstance)
+                .append("id", serviceInstance.getInstanceId())
+                .append("serviceId", serviceInstance.getServiceId())
+                .append("uir", serviceInstance.getUri());
         if (this.checkIsLightminInstance(serviceInstance)) {
             try {
                 this.discoveryRegistrationBean.register(serviceInstance);
             } catch (final SpringBatchLightminApplicationException ex) {
-                log.error("Error while register {}", serviceInstance, ex);
+                log.error("Error while register {}", toStringer.toString(), ex);
             }
         } else {
-            log.info("Skipping {}, no Spring Batch Lightmin Instance");
+            log.info("Skipping {}, no Spring Batch Lightmin Instance", toStringer.toString());
         }
     }
 

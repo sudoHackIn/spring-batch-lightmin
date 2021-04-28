@@ -45,6 +45,7 @@ public class ServerSchedulerService {
             final SchedulerExecution execution = new SchedulerExecution();
             execution.setState(ExecutionStatus.NEW);
             execution.setNextFireTime(this.schedulerExecutionService.getNextFireTime(savedConfiguration.getCronExpression()));
+
             execution.setSchedulerConfigurationId(savedConfiguration.getId());
             execution.setExecutionCount(0);
             execution.setLastUpdate(new Date());
