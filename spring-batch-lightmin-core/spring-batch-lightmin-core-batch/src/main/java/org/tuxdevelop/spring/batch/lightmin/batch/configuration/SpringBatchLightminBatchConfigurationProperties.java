@@ -25,8 +25,6 @@ public class SpringBatchLightminBatchConfigurationProperties {
 
     //Table Prefix
     private String tablePrefix = AbstractJdbcBatchMetadataDao.DEFAULT_TABLE_PREFIX;
-    //Repository
-    private BatchRepositoryType repositoryType = BatchRepositoryType.JDBC;
     //Spring Batch Datasource
     private String dataSourceName = DEFAULT_DATA_SOURCE_NAME;
     private String databaseSchema;

@@ -14,12 +14,6 @@ public class JpaSpringBatchLightminBatchConfigurer extends BasicSpringBatchLight
     private final EntityManagerFactory entityManagerFactory;
 
     public JpaSpringBatchLightminBatchConfigurer(final TransactionManagerCustomizers transactionManagerCustomizers,
-                                                 final EntityManagerFactory entityManagerFactory) {
-        super(transactionManagerCustomizers);
-        this.entityManagerFactory = entityManagerFactory;
-    }
-
-    public JpaSpringBatchLightminBatchConfigurer(final TransactionManagerCustomizers transactionManagerCustomizers,
                                                  final DataSource dataSource,
                                                  final String tablePrefix,
                                                  final EntityManagerFactory entityManagerFactory) {

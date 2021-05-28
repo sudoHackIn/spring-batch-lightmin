@@ -35,7 +35,7 @@ public class JdbcLightminJobExecutionDao extends JdbcJobExecutionDao implements 
 
     private final DataSource dataSource;
 
-    public JdbcLightminJobExecutionDao(final DataSource dataSource) throws Exception {
+    public JdbcLightminJobExecutionDao(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

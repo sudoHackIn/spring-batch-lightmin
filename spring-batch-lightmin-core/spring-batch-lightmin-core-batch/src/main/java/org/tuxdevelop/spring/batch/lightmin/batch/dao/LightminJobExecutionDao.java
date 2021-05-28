@@ -31,10 +31,10 @@ public interface LightminJobExecutionDao {
     List<JobExecution> getJobExecutions(String jobName, int start, int count);
 
     /**
-     * @param jobName
-     * @param queryParameter
-     * @param size
-     * @return
+     * @param jobName name of the {@link org.springframework.batch.core.Job}
+     * @param queryParameter - map of {@link QueryParameterKey} for filtering
+     * @param size - max number of rows to return
+     * @return List of {@link JobExecution}s
      */
     List<JobExecution> findJobExecutions(final String jobName, final Map<String, Object> queryParameter, final Integer size);
 }

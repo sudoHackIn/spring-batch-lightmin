@@ -33,11 +33,11 @@ public class LightminClientDiscoveryConfiguration {
         return new DiscoveryListener(lightminClientProperties);
     }
 
-    @Bean
-    @ConditionalOnMissingBean(MetaDataExtender.class)
-    public MetaDataExtender metaDataExtender() {
-        return new NoOperationMetaDataExtender();
-    }
+//    @Bean
+//    @ConditionalOnMissingBean(MetaDataExtender.class)
+//    public MetaDataExtender metaDataExtender() {
+//        return new NoOperationMetaDataExtender();
+//    }
 
     @Bean
     public LightminServerLocatorService discoveryLightminServerLocator(
