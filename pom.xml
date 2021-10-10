@@ -211,17 +211,17 @@
     </scm>
 
 
-    <!-- distribution management -->
-    <distributionManagement>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+<!--    &lt;!&ndash; distribution management &ndash;&gt;-->
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>ossrh</id>-->
+<!--            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--            <id>ossrh</id>-->
+<!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
 
     <!-- build section -->
     <build>
@@ -412,4 +412,18 @@
             </build>
         </profile>
     </profiles>
+
+    <distributionManagement>
+        <repository>
+            <id>AS_UVZ_release</id>
+            <url>http://sbtatlas.sigma.sbrf.ru/nexus/content/repositories/AS_UVZ_release/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </repository>
+
+        <snapshotRepository>
+            <id>AS_UVZ_snapshot</id>
+            <url>http://sbtatlas.sigma.sbrf.ru/nexus/content/repositories/AS_UVZ_snapshot/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
