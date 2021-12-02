@@ -18,6 +18,7 @@
         <module>spring-batch-lightmin-client-discovery-eureka</module>
         <module>spring-batch-lightmin-client-discovery-core</module>
         <module>spring-batch-lightmin-client-classic</module>
+        <module>spring-batch-lightmin-client-discovery-zookeeper</module>
     </modules>
 
 </project>
