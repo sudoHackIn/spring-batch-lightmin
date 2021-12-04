@@ -2,17 +2,15 @@ package org.tuxdevelop.spring.batch.lightmin.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.BDDAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tuxdevelop.spring.batch.lightmin.domain.*;
 import org.tuxdevelop.spring.batch.lightmin.exception.SpringBatchLightminApplicationException;
-import org.tuxdevelop.spring.batch.lightmin.exception.SpringBatchLightminConfigurationException;
-import org.tuxdevelop.spring.batch.lightmin.listener.FolderListener;
 import org.tuxdevelop.spring.batch.lightmin.test.domain.DomainTestHelper;
 import org.tuxdevelop.test.configuration.ITConfiguration;
 
@@ -21,9 +19,9 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = ITConfiguration.class)
-public class DefaultAdminServiceIT {
+class DefaultAdminServiceIT {
 
     private static final String JOB_NAME = "simpleJob";
 
@@ -132,7 +130,7 @@ public class DefaultAdminServiceIT {
                 .isNotNull().startsWith(jobConfiguration.getJobName() + "-" + jobListenerActual.getJobListenerType() + "-");
     }
 
-    @Before
+    @BeforeEach
     public void init() {
         try {
             final Collection<JobConfiguration> allJC = this.adminService.getJobConfigurationsByJobName(JOB_NAME);

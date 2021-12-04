@@ -1,12 +1,10 @@
 package org.tuxdevelop.spring.batch.lightmin.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.explore.JobExplorer;
@@ -15,15 +13,15 @@ import org.tuxdevelop.spring.batch.lightmin.test.domain.DomainTestHelper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DefaultStepServiceTest {
 
     private static final String STEP_NAME = "sampleStep";
 
-    @InjectMocks
-    private DefaultStepService stepService;
     @Mock
     private JobExplorer jobExplorer;
+    @InjectMocks
+    private DefaultStepService stepService;
 
     @Test
     public void getStepExecutionTest() {
@@ -43,11 +41,4 @@ public class DefaultStepServiceTest {
         this.stepService.attachStepExecutions(jobExecution);
         verify(this.jobExplorer, times(1)).getJobExecution(jobExecution.getId());
     }
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        this.stepService = new DefaultStepService(this.jobExplorer);
-    }
-
 }

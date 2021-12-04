@@ -1,7 +1,7 @@
 package org.tuxdevelop.spring.batch.lightmin.client.api.controller;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -147,7 +147,7 @@ public class JobRestControllerIT extends CommonControllerIT {
         assertThat(body.length <= 4).isTrue();
     }
 
-    @Before
+    @BeforeEach
     public void init() {
         this.cleanUp();
         this.launchSimpleJob();

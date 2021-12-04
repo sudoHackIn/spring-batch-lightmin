@@ -2,7 +2,9 @@ package org.tuxdevelop.spring.batch.lightmin.api.resource.admin;
 
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.Assert.assertThrows;
 
 public class SchedulerStatusTest {
 
@@ -30,8 +32,8 @@ public class SchedulerStatusTest {
         Assertions.assertThat(schedulerStatus).isEqualTo(SchedulerStatus.IN_TERMINATION);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetByValueUnknown() {
-        SchedulerStatus.getByValue("UNKNOWN");
+        assertThrows(IllegalArgumentException.class, () -> SchedulerStatus.getByValue("UNKNOWN"));
     }
 }

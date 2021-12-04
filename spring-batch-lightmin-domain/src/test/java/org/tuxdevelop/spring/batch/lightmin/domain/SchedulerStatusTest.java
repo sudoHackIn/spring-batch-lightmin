@@ -2,8 +2,10 @@ package org.tuxdevelop.spring.batch.lightmin.domain;
 
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tuxdevelop.spring.batch.lightmin.exception.SpringBatchLightminApplicationException;
+
+import static org.junit.Assert.assertThrows;
 
 public class SchedulerStatusTest {
 
@@ -31,8 +33,8 @@ public class SchedulerStatusTest {
         Assertions.assertThat(schedulerStatus).isEqualTo(SchedulerStatus.IN_TERMINATION);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void getByValueUnknownTest() {
-        SchedulerStatus.getByValue("UNKNOWN");
+        assertThrows(SpringBatchLightminApplicationException.class,()->SchedulerStatus.getByValue("UNKNOWN"));
     }
 }

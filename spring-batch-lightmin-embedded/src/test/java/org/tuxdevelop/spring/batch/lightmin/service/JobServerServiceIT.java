@@ -1,7 +1,7 @@
 package org.tuxdevelop.spring.batch.lightmin.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -124,11 +124,11 @@ public abstract class JobServerServiceIT {
 
     public abstract LightminClientApplication createLightminClientApplication();
 
-    @Before
+    @BeforeEach
     public void init() {
         try {
             final org.springframework.batch.core.JobExecution execution = this.jobLauncher.run(this.simpleJob, new JobParametersBuilder().addLong("time", System
-                    .currentTimeMillis())
+                            .currentTimeMillis())
                     .toJobParameters());
             this.launchedJobExecutionId = execution.getId();
             this.launchedJobInstanceId = execution.getJobInstance().getId();

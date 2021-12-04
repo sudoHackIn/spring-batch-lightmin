@@ -1,7 +1,7 @@
 package org.tuxdevelop.spring.batch.lightmin.service;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.admin.JobConfiguration;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.admin.JobConfigurations;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.admin.JobSchedulerConfiguration;
@@ -15,7 +15,6 @@ import org.tuxdevelop.spring.batch.lightmin.test.api.ApiTestHelper;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,8 +36,6 @@ public abstract class AdminServerServiceIT {
         final LightminClientApplication lightminClientApplication = this.createLightminClientApplication();
         final JobConfiguration jobConfiguration = this.createJobConfiguration();
         this.getAdminServerService().saveJobConfiguration(jobConfiguration, lightminClientApplication);
-        final Collection<String> jobNames = new LinkedList<>();
-        jobNames.add("simpleJob");
         final JobConfigurations jobConfigurations = this.getAdminServerService().getJobConfigurations(lightminClientApplication);
         assertThat(jobConfigurations).isNotNull();
         final Collection<JobConfiguration> fetchedJobConfigurations = jobConfigurations.getJobConfigurations();
@@ -68,8 +65,6 @@ public abstract class AdminServerServiceIT {
         final LightminClientApplication lightminClientApplication = this.createLightminClientApplication();
         final JobConfiguration jobConfiguration = this.createJobConfiguration();
         this.getAdminServerService().saveJobConfiguration(jobConfiguration, lightminClientApplication);
-        final Collection<String> jobNames = new LinkedList<>();
-        jobNames.add("simpleJob");
         final JobConfigurations jobConfigurations = this.getAdminServerService().getJobConfigurations(lightminClientApplication);
         assertThat(jobConfigurations).isNotNull();
         final Collection<JobConfiguration> fetchedJobConfigurations = jobConfigurations.getJobConfigurations();
@@ -86,8 +81,6 @@ public abstract class AdminServerServiceIT {
         final LightminClientApplication lightminClientApplication = this.createLightminClientApplication();
         final JobConfiguration jobConfiguration = this.createJobConfiguration();
         this.getAdminServerService().saveJobConfiguration(jobConfiguration, lightminClientApplication);
-        final Collection<String> jobNames = new LinkedList<>();
-        jobNames.add("simpleJob");
         final Map<String, JobConfigurations> result = this.getAdminServerService().getJobConfigurationsMap(lightminClientApplication);
         assertThat(result.containsKey("simpleJob")).isTrue();
         final JobConfigurations jobConfigurations = result.get("simpleJob");

@@ -1,6 +1,6 @@
 package org.tuxdevelop.spring.batch.lightmin.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.tuxdevelop.spring.batch.lightmin.exception.SpringBatchLightminApplicationException;
@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 public class DomainParameterParserTest {
 
@@ -116,15 +117,15 @@ public class DomainParameterParserTest {
         assertThat(simpleDateFormat.format(date)).isEqualTo(dateString);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void parseDateExceptionTest() {
         final String dateString = "2015/03:27";
-        DomainParameterParser.parseDate(dateString);
+        assertThrows(SpringBatchLightminApplicationException.class, () -> DomainParameterParser.parseDate(dateString));
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void createValueInstanceExceptionTest() {
-        DomainParameterParser.createValueInstance("CLASS", "1234");
+        assertThrows(SpringBatchLightminApplicationException.class, () -> DomainParameterParser.createValueInstance("CLASS", "1234"));
     }
 
     @Test

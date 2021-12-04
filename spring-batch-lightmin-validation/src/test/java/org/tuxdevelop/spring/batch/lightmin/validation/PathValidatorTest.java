@@ -1,8 +1,9 @@
 package org.tuxdevelop.spring.batch.lightmin.validation;
 
 import org.assertj.core.api.BDDAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.tuxdevelop.spring.batch.lightmin.validation.annotation.PathExists;
 import org.tuxdevelop.spring.batch.lightmin.validation.validator.PathValidator;
@@ -11,12 +12,12 @@ public class PathValidatorTest {
 
     private PathValidator validator;
 
-    @Before
+    @BeforeEach
     public void before() {
         this.validator = new PathValidator();
     }
 
-    @Before
+    @AfterEach
     public void after() {
         this.validator = null;
     }

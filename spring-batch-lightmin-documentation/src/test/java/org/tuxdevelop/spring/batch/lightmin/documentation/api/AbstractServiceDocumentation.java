@@ -3,9 +3,8 @@ package org.tuxdevelop.spring.batch.lightmin.documentation.api;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -14,8 +13,9 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tuxdevelop.spring.batch.lightmin.client.api.LightminClientApplication;
 import org.tuxdevelop.spring.batch.lightmin.client.classic.configuration.LightminClientClassicConfigurationProperties;
 import org.tuxdevelop.spring.batch.lightmin.client.classic.service.LightminClientRegistratorService;
@@ -29,16 +29,16 @@ import org.tuxdevelop.spring.batch.lightmin.service.AdminService;
 import org.tuxdevelop.spring.batch.lightmin.service.ServiceEntry;
 import org.tuxdevelop.test.configuration.ITJobConfiguration;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 @Slf4j
-@RunWith(SpringRunner.class)
+@ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
 @SpringBootTest(
         classes = {ITConfigurationApplication.class, ITJobConfiguration.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -69,9 +69,6 @@ public abstract class AbstractServiceDocumentation {
     protected MyThread myThread;
     @LocalServerPort
     private Integer serverPort;
-
-    @Rule
-    public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");
 
     protected RequestSpecification documentationSpec;
 
@@ -186,9 +183,9 @@ public abstract class AbstractServiceDocumentation {
         return jobConfiguration;
     }
 
-    protected LightminClientApplication createLightminClientApplication(final String applicationName) {
+    protected LightminClientApplication createLightminClientApplication() {
         return LightminClientApplication.createApplication
-                (Arrays.asList(this.simpleJob.getName()), this.lightminClientProperties);
+                (List.of(this.simpleJob.getName()), this.lightminClientProperties);
     }
 
 
@@ -203,8 +200,8 @@ public abstract class AbstractServiceDocumentation {
         }
     }
 
-    @Before
-    public void init() {
+    @BeforeEach
+    public void init(RestDocumentationContextProvider restDocumentation) {
         this.cleanUp();
         final int port = this.serverPort;
         this.lightminClientProperties.setServiceUrl("http://localhost:" + port);
@@ -213,7 +210,7 @@ public abstract class AbstractServiceDocumentation {
         this.lightminProperties.getServer().setUrl(new String[]{"http://localhost:" + port});
         //lightminClientRegistrator.register();
         this.addJobConfigurations();
-        this.documentationSpec = new RequestSpecBuilder().addFilter(documentationConfiguration(this.restDocumentation)).build();
+        this.documentationSpec = new RequestSpecBuilder().addFilter(documentationConfiguration(restDocumentation)).build();
         this.launchSimpleJob();
     }
 

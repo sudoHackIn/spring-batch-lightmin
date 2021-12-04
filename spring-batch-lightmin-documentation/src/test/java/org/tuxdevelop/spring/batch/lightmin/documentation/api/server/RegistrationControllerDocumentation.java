@@ -1,7 +1,7 @@
 package org.tuxdevelop.spring.batch.lightmin.documentation.api.server;
 
 import io.restassured.http.ContentType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tuxdevelop.spring.batch.lightmin.client.api.LightminClientApplication;
 import org.tuxdevelop.spring.batch.lightmin.documentation.api.AbstractServiceDocumentation;
 
@@ -16,8 +16,7 @@ public class RegistrationControllerDocumentation extends AbstractServiceDocument
 
     @Test
     public void testRegister() {
-        final LightminClientApplication lightminClientApplication = createLightminClientApplication("sample " +
-                "application");
+        final LightminClientApplication lightminClientApplication = createLightminClientApplication();
         given(this.documentationSpec)
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
@@ -38,7 +37,7 @@ public class RegistrationControllerDocumentation extends AbstractServiceDocument
 
     @Test
     public void testUnregister() {
-        final LightminClientApplication lightminClientApplication = createLightminClientApplication("sample " + "application");
+        final LightminClientApplication lightminClientApplication = createLightminClientApplication();
         final LightminClientApplication registeredApplication = registrationBean.register(lightminClientApplication);
         given(this.documentationSpec)
                 .accept(ContentType.JSON)
@@ -62,7 +61,7 @@ public class RegistrationControllerDocumentation extends AbstractServiceDocument
 
     @Test
     public void testgetAll() {
-        final LightminClientApplication lightminClientApplication = createLightminClientApplication("sample " + "application");
+        final LightminClientApplication lightminClientApplication = createLightminClientApplication();
         registrationBean.register(lightminClientApplication);
         given(this.documentationSpec)
                 .accept(ContentType.JSON)

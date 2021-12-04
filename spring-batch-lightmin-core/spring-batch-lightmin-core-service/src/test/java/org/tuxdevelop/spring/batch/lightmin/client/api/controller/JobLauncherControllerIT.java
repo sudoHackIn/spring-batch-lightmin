@@ -1,8 +1,8 @@
 package org.tuxdevelop.spring.batch.lightmin.client.api.controller;
 
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.batch.JobLaunch;
@@ -57,7 +57,7 @@ public class JobLauncherControllerIT extends CommonControllerIT {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
-    @Before
+    @BeforeEach
     public void init() {
         this.cleanUp();
     }

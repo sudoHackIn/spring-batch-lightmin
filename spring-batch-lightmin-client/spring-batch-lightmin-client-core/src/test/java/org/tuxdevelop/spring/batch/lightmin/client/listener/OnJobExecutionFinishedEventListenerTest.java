@@ -1,16 +1,14 @@
 package org.tuxdevelop.spring.batch.lightmin.client.listener;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.monitoring.JobExecutionEventInfo;
 import org.tuxdevelop.spring.batch.lightmin.client.publisher.RemoteJobExecutionEventPublisher;
 import org.tuxdevelop.spring.batch.lightmin.client.publisher.RemoteStepExecutionEventPublisher;
@@ -18,17 +16,17 @@ import org.tuxdevelop.spring.batch.lightmin.event.JobExecutionEvent;
 
 import static org.mockito.Mockito.any;
 
-@RunWith(MockitoJUnitRunner.class)
-@SpringBootTest()
+@ExtendWith(MockitoExtension.class)
 public class OnJobExecutionFinishedEventListenerTest {
 
-    private OnJobExecutionFinishedEventListener onJobExecutionFinishedEventListener;
 
     @Mock
     private RemoteJobExecutionEventPublisher jobExecutionEventPublisher;
 
     @Mock
     private RemoteStepExecutionEventPublisher remoteStepExecutionEventPublisher;
+    @InjectMocks
+    private OnJobExecutionFinishedEventListener onJobExecutionFinishedEventListener;
 
     @Test
     public void testOnApplicationEventJobExecution() {
@@ -42,12 +40,5 @@ public class OnJobExecutionFinishedEventListenerTest {
         Mockito.verify(this.jobExecutionEventPublisher, Mockito.times(1))
                 .publishEvent(any(JobExecutionEventInfo.class));
     }
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        this.onJobExecutionFinishedEventListener = new OnJobExecutionFinishedEventListener(this.jobExecutionEventPublisher, this.remoteStepExecutionEventPublisher);
-    }
-
 }
 

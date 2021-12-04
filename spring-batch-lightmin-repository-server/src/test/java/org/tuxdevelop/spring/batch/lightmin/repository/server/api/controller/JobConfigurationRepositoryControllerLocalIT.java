@@ -1,14 +1,14 @@
 package org.tuxdevelop.spring.batch.lightmin.repository.server.api.controller;
 
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tuxdevelop.spring.batch.lightmin.repository.JobConfigurationRepository;
 import org.tuxdevelop.spring.batch.lightmin.test.util.ITJobConfigurationRepository;
 import org.tuxdevelop.test.configuration.IntegrationTestConfiguration;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {IntegrationTestConfiguration.class})
 public class JobConfigurationRepositoryControllerLocalIT extends JobConfigurationRepositoryControllerIT {
 

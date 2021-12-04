@@ -1,11 +1,14 @@
 package org.tuxdevelop.spring.batch.lightmin.repository.server.api.controller;
 
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import org.tuxdevelop.spring.batch.lightmin.repository.JobConfigurationRepository;
@@ -15,7 +18,7 @@ import org.tuxdevelop.spring.batch.lightmin.repository.configuration.RemoteJobCo
 import org.tuxdevelop.spring.batch.lightmin.test.util.ITJobConfigurationRepository;
 import org.tuxdevelop.test.configuration.remote.RemoteIntegrationTestConfiguration;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {RemoteIntegrationTestConfiguration.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @PropertySource(value = {"classpath:application.properties"})
 public class JobConfigurationRepositoryControllerRemoteIT extends JobConfigurationRepositoryControllerIT {
@@ -36,7 +39,7 @@ public class JobConfigurationRepositoryControllerRemoteIT extends JobConfigurati
     }
 
     @Override
-    @Before
+    @BeforeEach
     public void init() {
         super.init();
         this.properties.setServerUrl("http://localhost:" + this.localPort);

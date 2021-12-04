@@ -1,12 +1,11 @@
 package org.tuxdevelop.spring.batch.lightmin.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.JobRegistry;
@@ -15,7 +14,6 @@ import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.tuxdevelop.spring.batch.lightmin.domain.*;
 import org.tuxdevelop.spring.batch.lightmin.listener.FolderListener;
 import org.tuxdevelop.spring.batch.lightmin.test.domain.DomainTestHelper;
@@ -24,7 +22,7 @@ import org.tuxdevelop.spring.batch.lightmin.util.BeanRegistrar;
 import static org.assertj.core.api.Fail.fail;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DefaultListenerServiceTest {
 
     @Mock
@@ -33,15 +31,16 @@ public class DefaultListenerServiceTest {
     private JobRepository jobRepository;
     @Mock
     private JobRegistry jobRegistry;
+
     @Mock
     private ApplicationContext applicationContext;
 
     @InjectMocks
     private DefaultListenerService listenerService;
 
-    private Job job;
-    private JobLauncher jobLauncher;
+    private final Job job = DomainTestHelper.createJob("testJob");
 
+    private final JobLauncher jobLauncher = new SimpleJobLauncher();
     @Test
     public void testRegisterListenerForJob() throws NoSuchJobException {
         final JobListenerConfiguration jobListenerConfiguration = DomainTestHelper.createJobListenerConfiguration
@@ -115,13 +114,8 @@ public class DefaultListenerServiceTest {
 
     }
 
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        this.listenerService = new DefaultListenerService(this.beanRegistrar, this.jobRegistry, this.jobRepository);
-        ReflectionTestUtils.setField(this.listenerService, "applicationContext", this.applicationContext);
-        this.job = DomainTestHelper.createJob("testJob");
-        this.jobLauncher = new SimpleJobLauncher();
+    @BeforeEach
+    void setUp() {
+        listenerService.setApplicationContext(applicationContext);
     }
-
 }

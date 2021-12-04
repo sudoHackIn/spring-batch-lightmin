@@ -3,7 +3,6 @@ package org.tuxdevelop.spring.batch.lightmin.client.configuration;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
@@ -61,7 +60,6 @@ public class LightminClientProperties {
     private final ServerProperties serverProperties;
     private final WebEndpointProperties webEndpointProperties;
 
-    @Autowired
     public LightminClientProperties(final ManagementServerProperties managementServerProperties,
                                     final ServerProperties serverProperties,
                                     @Value("${spring.batch.lightmin.application-name:null}") final String name,
@@ -91,7 +89,7 @@ public class LightminClientProperties {
                 resultManagementUrl =
                         this.append(
                                 this.append(this.getServiceUrl(),
-                                        this.managementServerProperties.getServlet().getContextPath()),
+                                        this.managementServerProperties.getBasePath()),
                                 this.webEndpointProperties.getBasePath());
             } else {
                 if (this.managementPort == null) {
@@ -103,13 +101,13 @@ public class LightminClientProperties {
                         final String hostAddress = this.getHostAddress(address);
                         resultManagementUrl = this.append(
                                 this.append(this.createLocalUri(hostAddress, this.managementPort),
-                                        this.managementServerProperties.getServlet().getContextPath()),
+                                        this.managementServerProperties.getBasePath()),
                                 this.webEndpointProperties.getBasePath());
 
                     } else {
                         resultManagementUrl = this.append(
                                 this.append(this.createLocalUri(this.determineHost(), this.managementPort),
-                                        this.managementServerProperties.getServlet().getContextPath()),
+                                        this.managementServerProperties.getBasePath()),
                                 this.webEndpointProperties.getBasePath());
                     }
                 }
@@ -170,7 +168,7 @@ public class LightminClientProperties {
     private String append(final String uri, final String path) {
         final String baseUri = uri.replaceFirst("/+$", "");
         final String resultUri;
-        if (StringUtils.isEmpty(path)) {
+        if (!StringUtils.hasLength(path)) {
             resultUri = baseUri;
         } else {
 

@@ -1,10 +1,11 @@
 package org.tuxdevelop.spring.batch.lightmin.domain;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tuxdevelop.spring.batch.lightmin.exception.SpringBatchLightminApplicationException;
 import org.tuxdevelop.spring.batch.lightmin.test.PojoTestBase;
 
 import static org.assertj.core.api.Fail.fail;
+import static org.junit.Assert.assertThrows;
 
 public class JobSchedulerConfigurationTest extends PojoTestBase {
 
@@ -40,22 +41,22 @@ public class JobSchedulerConfigurationTest extends PojoTestBase {
         }
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void validateSchedulerNullTest() {
         final JobSchedulerConfiguration jobSchedulerConfiguration = new JobSchedulerConfiguration();
         jobSchedulerConfiguration.setCronExpression("0 0 12 * * ?");
         jobSchedulerConfiguration.setJobSchedulerType(null);
         jobSchedulerConfiguration.setTaskExecutorType(TaskExecutorType.SYNCHRONOUS);
-        jobSchedulerConfiguration.validate();
+        assertThrows(SpringBatchLightminApplicationException.class, jobSchedulerConfiguration::validate);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void validateTaskExecutorNullTest() {
         final JobSchedulerConfiguration jobSchedulerConfiguration = new JobSchedulerConfiguration();
         jobSchedulerConfiguration.setCronExpression("0 0 12 * * ?");
         jobSchedulerConfiguration.setJobSchedulerType(JobSchedulerType.CRON);
         jobSchedulerConfiguration.setTaskExecutorType(null);
-        jobSchedulerConfiguration.validate();
+        assertThrows(SpringBatchLightminApplicationException.class, jobSchedulerConfiguration::validate);
     }
 
     @Test
@@ -69,34 +70,34 @@ public class JobSchedulerConfigurationTest extends PojoTestBase {
         }
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void validateCronExpressionNullTest() {
         final JobSchedulerConfiguration jobSchedulerConfiguration = new JobSchedulerConfiguration();
         jobSchedulerConfiguration.setCronExpression(null);
-        jobSchedulerConfiguration.validateCron();
+        assertThrows(SpringBatchLightminApplicationException.class, jobSchedulerConfiguration::validate);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void validateCronExpressionNotValidTest() {
         final JobSchedulerConfiguration jobSchedulerConfiguration = new JobSchedulerConfiguration();
         jobSchedulerConfiguration.setCronExpression("invalid");
-        jobSchedulerConfiguration.validateCron();
+        assertThrows(SpringBatchLightminApplicationException.class, jobSchedulerConfiguration::validateCron);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void validateCronExpressionFixedDelaySetTest() {
         final JobSchedulerConfiguration jobSchedulerConfiguration = new JobSchedulerConfiguration();
         jobSchedulerConfiguration.setCronExpression("0 0 12 * * ?");
         jobSchedulerConfiguration.setFixedDelay(1000L);
-        jobSchedulerConfiguration.validateCron();
+        assertThrows(SpringBatchLightminApplicationException.class, jobSchedulerConfiguration::validateCron);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void validateCronExpressionInitialDelaySetTest() {
         final JobSchedulerConfiguration jobSchedulerConfiguration = new JobSchedulerConfiguration();
         jobSchedulerConfiguration.setCronExpression("0 0 12 * * ?");
         jobSchedulerConfiguration.setInitialDelay(1000L);
-        jobSchedulerConfiguration.validateCron();
+        assertThrows(SpringBatchLightminApplicationException.class, jobSchedulerConfiguration::validateCron);
     }
 
     @Test
@@ -111,33 +112,33 @@ public class JobSchedulerConfigurationTest extends PojoTestBase {
         }
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void validatePeriodFixedDelayNullTest() {
         final JobSchedulerConfiguration jobSchedulerConfiguration = new JobSchedulerConfiguration();
-        jobSchedulerConfiguration.validateCron();
+        assertThrows(SpringBatchLightminApplicationException.class, jobSchedulerConfiguration::validateCron);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void validatePeriodFixedDelayNegativTest() {
         final JobSchedulerConfiguration jobSchedulerConfiguration = new JobSchedulerConfiguration();
         jobSchedulerConfiguration.setFixedDelay(-1000L);
-        jobSchedulerConfiguration.validateCron();
+        assertThrows(SpringBatchLightminApplicationException.class, jobSchedulerConfiguration::validateCron);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void validatePeriodInitialDelayNegativTest() {
         final JobSchedulerConfiguration jobSchedulerConfiguration = new JobSchedulerConfiguration();
         jobSchedulerConfiguration.setFixedDelay(-1000L);
         jobSchedulerConfiguration.setInitialDelay(-1000L);
-        jobSchedulerConfiguration.validateCron();
+        assertThrows(SpringBatchLightminApplicationException.class, jobSchedulerConfiguration::validateCron);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void validatePeriodCronExpressionSetTest() {
         final JobSchedulerConfiguration jobSchedulerConfiguration = new JobSchedulerConfiguration();
         jobSchedulerConfiguration.setFixedDelay(1000L);
         jobSchedulerConfiguration.setInitialDelay(1000L);
         jobSchedulerConfiguration.setCronExpression("0 0 12 * * ?");
-        jobSchedulerConfiguration.validateCron();
+        assertThrows(SpringBatchLightminApplicationException.class, jobSchedulerConfiguration::validateCron);
     }
 }

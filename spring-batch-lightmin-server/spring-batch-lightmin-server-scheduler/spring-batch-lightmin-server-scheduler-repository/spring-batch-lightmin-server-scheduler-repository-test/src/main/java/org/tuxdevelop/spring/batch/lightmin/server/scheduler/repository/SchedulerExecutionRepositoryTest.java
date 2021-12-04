@@ -2,8 +2,8 @@ package org.tuxdevelop.spring.batch.lightmin.server.scheduler.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.BDDAssertions;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.tuxdevelop.spring.batch.lightmin.server.scheduler.repository.domain.ExecutionStatus;
 import org.tuxdevelop.spring.batch.lightmin.server.scheduler.repository.domain.SchedulerConfiguration;
 import org.tuxdevelop.spring.batch.lightmin.server.scheduler.repository.domain.SchedulerExecution;
@@ -258,7 +258,7 @@ public abstract class SchedulerExecutionRepositoryTest extends SchedulerTest {
     }
 
 
-    @After
+    @AfterEach
     public void cleanUp() {
         this.getCleanUpRepository().cleanUp();
     }

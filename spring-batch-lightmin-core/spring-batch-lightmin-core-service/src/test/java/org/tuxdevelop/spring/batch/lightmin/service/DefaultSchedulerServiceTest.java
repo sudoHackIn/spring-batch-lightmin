@@ -1,12 +1,11 @@
 package org.tuxdevelop.spring.batch.lightmin.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.JobRegistry;
@@ -14,7 +13,6 @@ import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.tuxdevelop.spring.batch.lightmin.domain.*;
 import org.tuxdevelop.spring.batch.lightmin.exception.SpringBatchLightminConfigurationException;
 import org.tuxdevelop.spring.batch.lightmin.scheduler.Scheduler;
@@ -23,16 +21,14 @@ import org.tuxdevelop.spring.batch.lightmin.util.BeanRegistrar;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DefaultSchedulerServiceTest {
 
-    @InjectMocks
-    private DefaultSchedulerService schedulerService;
 
     @Mock
     private BeanRegistrar beanRegistrar;
@@ -44,6 +40,8 @@ public class DefaultSchedulerServiceTest {
     private ApplicationContext applicationContext;
     @Mock
     private Scheduler scheduler;
+    @InjectMocks
+    private DefaultSchedulerService schedulerService;
 
     private Job sampleJob;
 
@@ -91,7 +89,6 @@ public class DefaultSchedulerServiceTest {
         jobParameters.put("LONG", 10L);
         jobParameters.put("DOUBLE", 20.2);
         jobParameters.put("STRING", "test");
-        jobParameters.put("DATE", "2015/03/27 23:19:24:120");
         jobParameters.put("DATE", "2015/03/27");
         jobConfiguration.setJobParameters(jobParameters);
         final SchedulerConstructorWrapper schedulerConstructorWrapper = new SchedulerConstructorWrapper();
@@ -121,7 +118,6 @@ public class DefaultSchedulerServiceTest {
         jobParameters.put("LONG", 10L);
         jobParameters.put("DOUBLE", 20.2);
         jobParameters.put("STRING", "test");
-        jobParameters.put("DATE", "2015/03/27 23:19:24:120");
         jobParameters.put("DATE", "2015/03/27");
         jobConfiguration.setJobParameters(jobParameters);
         final SchedulerConstructorWrapper schedulerConstructorWrapper = new SchedulerConstructorWrapper();
@@ -168,11 +164,11 @@ public class DefaultSchedulerServiceTest {
         verify(this.scheduler, times(1)).schedule();
     }
 
-    @Test(expected = SpringBatchLightminConfigurationException.class)
+    @Test
     public void scheduleUnknownTest() {
         final String beanName = "schedulerBean";
         when(this.applicationContext.containsBean(beanName)).thenReturn(Boolean.FALSE);
-        this.schedulerService.schedule(beanName, Boolean.FALSE);
+        assertThrows(SpringBatchLightminConfigurationException.class, () -> this.schedulerService.schedule(beanName, Boolean.FALSE));
     }
 
     @Test
@@ -195,11 +191,11 @@ public class DefaultSchedulerServiceTest {
         verify(this.scheduler, times(0)).terminate();
     }
 
-    @Test(expected = SpringBatchLightminConfigurationException.class)
+    @Test
     public void terminateUnknownTest() {
         final String beanName = "schedulerBean";
         when(this.applicationContext.containsBean(beanName)).thenReturn(Boolean.FALSE);
-        this.schedulerService.terminate(beanName);
+        assertThrows(SpringBatchLightminConfigurationException.class, () -> this.schedulerService.terminate(beanName));
     }
 
     @Test
@@ -212,18 +208,16 @@ public class DefaultSchedulerServiceTest {
         assertThat(schedulerStatus).isEqualTo(SchedulerStatus.STOPPED);
     }
 
-    @Test(expected = SpringBatchLightminConfigurationException.class)
+    @Test
     public void getSchedulerStatusUnknownTest() {
         final String beanName = "schedulerBean";
         when(this.applicationContext.containsBean(beanName)).thenReturn(Boolean.FALSE);
-        this.schedulerService.getSchedulerStatus(beanName);
+        assertThrows(SpringBatchLightminConfigurationException.class, () -> this.schedulerService.getSchedulerStatus(beanName));
     }
 
-    @Before
+    @BeforeEach
     public void init() {
-        MockitoAnnotations.initMocks(this);
-        this.schedulerService = new DefaultSchedulerService(this.beanRegistrar, this.jobRepository, this.jobRegistry);
         this.sampleJob = DomainTestHelper.createJob("sampleJob");
-        ReflectionTestUtils.setField(this.schedulerService, "applicationContext", this.applicationContext);
+        this.schedulerService.setApplicationContext(applicationContext);
     }
 }

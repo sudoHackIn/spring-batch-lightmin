@@ -1,12 +1,13 @@
 package org.tuxdevelop.spring.batch.lightmin.server.fe.service;
 
 import org.assertj.core.api.BDDAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.monitoring.JobExecutionEventInfo;
 import org.tuxdevelop.spring.batch.lightmin.server.fe.model.common.ContentPageModel;
 import org.tuxdevelop.spring.batch.lightmin.server.fe.model.event.JobExecutionEventModel;
@@ -17,14 +18,15 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JobExecutionEventFeServiceTest {
 
-    private JobExecutionEventFeService jobExecutionEventFeService;
     @Mock
     private RegistrationBean registrationBean;
     @Mock
     private EventService eventService;
+    @InjectMocks
+    private JobExecutionEventFeService jobExecutionEventFeService;
 
     @Test
     public void testGetJobExecutionEventModels() {
@@ -40,12 +42,4 @@ public class JobExecutionEventFeServiceTest {
         BDDAssertions.then(result.getValue()).isNotNull();
         BDDAssertions.then(result.getValue().size()).isEqualTo(pageSize);
     }
-
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        this.jobExecutionEventFeService = new JobExecutionEventFeService(this.registrationBean, this.eventService);
-    }
-
 }

@@ -1,9 +1,10 @@
 package org.tuxdevelop.spring.batch.lightmin.api.resource.admin;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 public class ListenerStatusTest {
 
@@ -20,8 +21,8 @@ public class ListenerStatusTest {
         assertThat(result).isEqualTo(ListenerStatus.STOPPED);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getByValueUnknownTest() {
-        ListenerStatus.getByValue("UNKNOWN");
+        assertThrows(IllegalArgumentException.class, () -> ListenerStatus.getByValue("UNKNOWN"));
     }
 }

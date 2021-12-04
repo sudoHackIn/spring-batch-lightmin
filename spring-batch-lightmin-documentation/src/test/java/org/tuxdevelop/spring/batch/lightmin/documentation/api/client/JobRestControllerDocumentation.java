@@ -2,7 +2,7 @@ package org.tuxdevelop.spring.batch.lightmin.documentation.api.client;
 
 
 import io.restassured.http.ContentType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.tuxdevelop.spring.batch.lightmin.batch.dao.QueryParameterKey;
 import org.tuxdevelop.spring.batch.lightmin.client.api.controller.AbstractRestController;

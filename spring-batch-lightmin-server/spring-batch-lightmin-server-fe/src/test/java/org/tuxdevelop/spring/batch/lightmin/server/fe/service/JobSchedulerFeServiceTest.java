@@ -1,12 +1,11 @@
 package org.tuxdevelop.spring.batch.lightmin.server.fe.service;
 
 import org.assertj.core.api.BDDAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.admin.JobConfiguration;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.admin.JobConfigurations;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.admin.JobSchedulerType;
@@ -20,20 +19,21 @@ import org.tuxdevelop.spring.batch.lightmin.test.api.ApiTestHelper;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JobSchedulerFeServiceTest {
 
     private static final String APPLICATION_INSTANCE_ID = "testApp";
     private static final Long JC_ID = 1L;
 
-    private JobSchedulerFeService jobSchedulerFeService;
     @Mock
     private RegistrationBean registrationBean;
     @Mock
     private AdminServerService adminServerService;
+    @InjectMocks
+    private JobSchedulerFeService jobSchedulerFeService;
 
     @Test
     public void testGetMapJobConfigurationModel() {
@@ -148,12 +148,5 @@ public class JobSchedulerFeServiceTest {
         } catch (final Exception e) {
             fail(e.getMessage());
         }
-    }
-
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        this.jobSchedulerFeService = new JobSchedulerFeService(this.registrationBean, this.adminServerService);
     }
 }

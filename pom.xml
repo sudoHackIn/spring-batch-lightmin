@@ -32,7 +32,7 @@
         </developer>
     </developers>
 
-    <version>2.2.3-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
 
     <modules>
         <module>spring-batch-lightmin-core</module>
@@ -52,26 +52,25 @@
     </modules>
 
     <properties>
-        <spring.boot.version>2.4.1</spring.boot.version>
-        <spring-cloud-dependencies.version>2020.0.0</spring-cloud-dependencies.version>
-        <assertj.version>3.15.0</assertj.version>
-        <openpojo.version>0.8.13</openpojo.version>
-        <equalsverifier.version>1.7.5</equalsverifier.version>
+        <spring.boot.version>2.6.1</spring.boot.version>
+        <spring.cloud-version>2021.0.0</spring.cloud-version>
+        <openpojo.version>0.9.1</openpojo.version>
+        <equalsverifier.version>3.7.2</equalsverifier.version>
         <datafactory.version>0.8</datafactory.version>
         <jacoco.version>0.8.5</jacoco.version>
         <infinispan9.version>9.4.20.Final</infinispan9.version>
         <infinispan.version>11.0.8.Final</infinispan.version>
         <!-- plugin versions -->
-        <maven-compiler-plugin.version>3.6.2</maven-compiler-plugin.version>
-        <maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
-        <maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.source>11</maven-compiler-plugin.source>
+        <maven-compiler-plugin.target>11</maven-compiler-plugin.target>
         <nexus-staging-maven-plugin.version>1.6.3</nexus-staging-maven-plugin.version>
-        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
-        <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
-        <maven-failsaife-plugin.version>2.20.1</maven-failsaife-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-failsaife-plugin.version>3.0.0-M5</maven-failsaife-plugin.version>
         <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
-        <asciidoctor.version>1.5.2</asciidoctor.version>
+        <asciidoctor.version>2.2.1</asciidoctor.version>
         <!-- jacoco -->
         <jacoco.skip>false</jacoco.skip>
     </properties>
@@ -90,17 +89,18 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud-dependencies.version}</version>
+                <version>${spring.cloud-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- assertj -->
-            <dependency>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-core</artifactId>
-                <version>${assertj.version}</version>
-            </dependency>
 
+            <dependency>
+                <groupId>org.tuxdevelop</groupId>
+                <artifactId>spring-batch-lightmin-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!--datafactory -->
             <dependency>
                 <groupId>org.fluttercode.datafactory</groupId>
@@ -159,8 +159,8 @@
 
         <!-- junit -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -321,6 +321,7 @@
                     <includes>
                         <include>**/*IT.java</include>
                     </includes>
+                    <classesDirectory>${project.build.directory}/classes</classesDirectory>
                 </configuration>
             </plugin>
             <plugin>

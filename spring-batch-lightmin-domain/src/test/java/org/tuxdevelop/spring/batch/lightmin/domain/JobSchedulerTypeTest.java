@@ -2,8 +2,10 @@ package org.tuxdevelop.spring.batch.lightmin.domain;
 
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tuxdevelop.spring.batch.lightmin.exception.SpringBatchLightminConfigurationException;
+
+import static org.junit.Assert.assertThrows;
 
 public class JobSchedulerTypeTest {
 
@@ -19,8 +21,8 @@ public class JobSchedulerTypeTest {
         Assertions.assertThat(jobSchedulerType).isEqualTo(JobSchedulerType.PERIOD);
     }
 
-    @Test(expected = SpringBatchLightminConfigurationException.class)
+    @Test
     public void getByIdUnknownTest() {
-        JobSchedulerType.getById(-1000L);
+        assertThrows(SpringBatchLightminConfigurationException.class, ()->JobSchedulerType.getById(-1000L));
     }
 }

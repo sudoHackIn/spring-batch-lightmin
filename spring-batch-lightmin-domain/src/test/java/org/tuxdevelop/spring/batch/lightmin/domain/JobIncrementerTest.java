@@ -2,8 +2,10 @@ package org.tuxdevelop.spring.batch.lightmin.domain;
 
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tuxdevelop.spring.batch.lightmin.exception.SpringBatchLightminApplicationException;
+
+import static org.junit.Assert.assertThrows;
 
 public class JobIncrementerTest {
 
@@ -19,8 +21,8 @@ public class JobIncrementerTest {
         Assertions.assertThat(jobIncrementer).isEqualTo(JobIncrementer.NONE);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void getByIdentifierExecptionTest() {
-        JobIncrementer.getByIdentifier("EXCEPTION");
+        assertThrows(SpringBatchLightminApplicationException.class, () -> JobIncrementer.getByIdentifier("EXCEPTION"));
     }
 }

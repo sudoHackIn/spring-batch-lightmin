@@ -2,8 +2,10 @@ package org.tuxdevelop.spring.batch.lightmin.domain;
 
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tuxdevelop.spring.batch.lightmin.exception.SpringBatchLightminApplicationException;
+
+import static org.junit.Assert.assertThrows;
 
 public class ListenerStatusTest {
 
@@ -20,8 +22,8 @@ public class ListenerStatusTest {
         Assertions.assertThat(result).isEqualTo(ListenerStatus.STOPPED);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void getByValueUnknownTest() {
-        ListenerStatus.getByValue("UNKNOWN");
+        assertThrows(SpringBatchLightminApplicationException.class, () -> ListenerStatus.getByValue("UNKNOWN"));
     }
 }

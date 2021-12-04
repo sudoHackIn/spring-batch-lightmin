@@ -1,14 +1,7 @@
 package org.tuxdevelop.spring.batch.lightmin.client.api.controller;
 
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
@@ -18,6 +11,12 @@ import org.tuxdevelop.spring.batch.lightmin.api.resource.admin.SchedulerStatus;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.common.JobParameters;
 import org.tuxdevelop.spring.batch.lightmin.client.api.DomainToResourceMapper;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JobConfigurationRestControllerIT extends CommonControllerIT {
 
@@ -55,22 +54,13 @@ public class JobConfigurationRestControllerIT extends CommonControllerIT {
         assertThat(jobConfiguration.getJobConfigurationId()).isEqualTo(this.addedJobConfigurationId);
     }
 
-    @Test(expected = HttpClientErrorException.BadRequest.class)
+    @Test
     public void testCreationOfFalsyConfigOnAddJobConfiguration() {
         final String uri = LOCALHOST + ":" + this.getServerPort() + AbstractRestController
                 .JobConfigurationRestControllerAPI.JOB_CONFIGURATIONS;
 
         final JobConfiguration jobConfiguration = DomainToResourceMapper.map(this.createJobConfigurationWithFalsyConfig());
-        final ResponseEntity<Void> responseEntity = this.restTemplate.postForEntity(uri, jobConfiguration, Void.class);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        final String uriGet = LOCALHOST + ":" + this.getServerPort() + AbstractRestController
-                .JobConfigurationRestControllerAPI.JOB_CONFIGURATIONS_JOB_NAME;
-        final ResponseEntity<JobConfigurations> result = this.restTemplate.getForEntity(uriGet, JobConfigurations.class,
-                "simpleJob");
-        assertThat(result).isNotNull();
-        final JobConfigurations jobConfigurations = result.getBody();
-        final Collection<JobConfiguration> jobConfigurationsCollection = jobConfigurations.getJobConfigurations();
-        assertThat(jobConfigurationsCollection).hasSize(2);
+        assertThrows(HttpClientErrorException.BadRequest.class, () -> restTemplate.postForEntity(uri, jobConfiguration, Void.class));
     }
 
 
@@ -190,7 +180,7 @@ public class JobConfigurationRestControllerIT extends CommonControllerIT {
                 .STOPPED);
     }
 
-    @Before
+    @BeforeEach
     public void init() {
         this.cleanUp();
         this.addJobConfigurations();

@@ -1,14 +1,14 @@
 package org.tuxdevelop.spring.batch.lightmin.batch.dao;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tuxdevelop.test.configuration.ITPersistenceConfiguration;
 
 import java.util.Date;
@@ -19,7 +19,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ITPersistenceConfiguration.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class JdbcLightminJobExecutionDaoIT {
@@ -111,7 +111,7 @@ public class JdbcLightminJobExecutionDaoIT {
     public void testFindJobExecutionsAllQueryParameter() {
         this.init();
         final String jobName = "simpleJob";
-        final Integer size = 4;
+        final int size = 4;
         final Date startDate = new Date(System.currentTimeMillis() - 100000);
         final Date endDate = new Date(System.currentTimeMillis() + 100000);
         final String exitStatus = ExitStatus.COMPLETED.getExitCode();
@@ -128,7 +128,7 @@ public class JdbcLightminJobExecutionDaoIT {
     @Test
     public void testFindJobExecutionsAllQueryParameterWithoutJobName() {
         this.init();
-        final Integer size = 4;
+        final int size = 4;
         final Date startDate = new Date(System.currentTimeMillis() - 100000);
         final Date endDate = new Date(System.currentTimeMillis() + 100000);
         final String exitStatus = ExitStatus.COMPLETED.getExitCode();
@@ -146,7 +146,7 @@ public class JdbcLightminJobExecutionDaoIT {
     public void testFindJobExecutionsExitStatus() {
         this.init();
         final String jobName = "simpleJob";
-        final Integer size = 4;
+        final int size = 4;
         final String exitStatus = ExitStatus.COMPLETED.getExitCode();
         final Map<String, Object> queryParameters = new HashMap<>();
         queryParameters.put(QueryParameterKey.EXIT_STATUS, exitStatus);
@@ -160,7 +160,7 @@ public class JdbcLightminJobExecutionDaoIT {
     public void testFindJobExecutionsStartDate() {
         this.init();
         final String jobName = "simpleJob";
-        final Integer size = 4;
+        final int size = 4;
         final Date startDate = new Date(System.currentTimeMillis() - 100000);
         final Map<String, Object> queryParameters = new HashMap<>();
         queryParameters.put(QueryParameterKey.START_DATE, startDate);
@@ -174,7 +174,7 @@ public class JdbcLightminJobExecutionDaoIT {
     public void testFindJobExecutionsEndDate() {
         this.init();
         final String jobName = "simpleJob";
-        final Integer size = 4;
+        final int size = 4;
         final Date endDate = new Date(System.currentTimeMillis() + 100000);
         final Map<String, Object> queryParameters = new HashMap<>();
         queryParameters.put(QueryParameterKey.END_DATE, endDate);

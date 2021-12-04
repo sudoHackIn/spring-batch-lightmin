@@ -1,12 +1,11 @@
 package org.tuxdevelop.spring.batch.lightmin.server.fe.service;
 
 import org.assertj.core.api.BDDAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.batch.JobExecution;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.batch.JobExecutionPage;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.batch.JobInstancePage;
@@ -24,22 +23,21 @@ import org.tuxdevelop.spring.batch.lightmin.test.api.ApiTestHelper;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JobExecutionFeServiceTest {
-
     private static final String APPLICATION_INSTANCE_ID = "instance_test";
     private static final Long JOB_EXECUTION_ID = 1L;
-
-    private JobExecutionFeService jobExecutionFeService;
-
     @Mock
     private RegistrationBean registrationBean;
     @Mock
     private JobServerService jobServerService;
     @Mock
     private LightminClientProperties lightminClientProperties;
+    @InjectMocks
+    private JobExecutionFeService jobExecutionFeService;
 
     @Test
     public void testGetJobExecutionModelPage() {
@@ -88,13 +86,13 @@ public class JobExecutionFeServiceTest {
 
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void testRestartJobExecutionError() {
 
         final LightminClientApplication applicationInstance = new LightminClientApplication();
         when(this.registrationBean.findById(APPLICATION_INSTANCE_ID)).thenReturn(applicationInstance);
         doThrow(new RuntimeException("Test Exception")).when(this.jobServerService).restartJobExecution(JOB_EXECUTION_ID, applicationInstance);
-        this.jobExecutionFeService.restartJobExecution(JOB_EXECUTION_ID, APPLICATION_INSTANCE_ID);
+        assertThrows(SpringBatchLightminApplicationException.class, () -> this.jobExecutionFeService.restartJobExecution(JOB_EXECUTION_ID, APPLICATION_INSTANCE_ID));
         verify(this.jobServerService, times(1))
                 .restartJobExecution(JOB_EXECUTION_ID, applicationInstance);
 
@@ -109,13 +107,13 @@ public class JobExecutionFeServiceTest {
                 .stopJobExecution(JOB_EXECUTION_ID, applicationInstance);
     }
 
-    @Test(expected = SpringBatchLightminApplicationException.class)
+    @Test
     public void testStopJobExecutionError() {
 
         final LightminClientApplication applicationInstance = new LightminClientApplication();
         when(this.registrationBean.findById(APPLICATION_INSTANCE_ID)).thenReturn(applicationInstance);
         doThrow(new RuntimeException("Test Exception")).when(this.jobServerService).stopJobExecution(JOB_EXECUTION_ID, applicationInstance);
-        this.jobExecutionFeService.stopJobExecution(JOB_EXECUTION_ID, APPLICATION_INSTANCE_ID);
+        assertThrows(SpringBatchLightminApplicationException.class, () -> this.jobExecutionFeService.stopJobExecution(JOB_EXECUTION_ID, APPLICATION_INSTANCE_ID));
         verify(this.jobServerService, times(1))
                 .stopJobExecution(JOB_EXECUTION_ID, applicationInstance);
 
@@ -142,11 +140,5 @@ public class JobExecutionFeServiceTest {
         final ApplicationContextModel result = this.jobExecutionFeService.getApplicationContextModel(APPLICATION_INSTANCE_ID);
 
         BDDAssertions.then(result).isNotNull();
-    }
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        this.jobExecutionFeService = new JobExecutionFeService(this.registrationBean, this.jobServerService);
     }
 }

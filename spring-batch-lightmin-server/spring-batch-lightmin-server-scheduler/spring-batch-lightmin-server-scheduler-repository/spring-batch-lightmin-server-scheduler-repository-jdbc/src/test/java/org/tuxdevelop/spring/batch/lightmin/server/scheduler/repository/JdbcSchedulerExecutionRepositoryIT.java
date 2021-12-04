@@ -1,12 +1,14 @@
 package org.tuxdevelop.spring.batch.lightmin.server.scheduler.repository;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.tuxdevelop.spring.batch.lightmin.test.configuration.JdbcTestConfiguration;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {JdbcTestConfiguration.class})
 public class JdbcSchedulerExecutionRepositoryIT extends SchedulerExecutionRepositoryTest {
 

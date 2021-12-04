@@ -1,12 +1,13 @@
 package org.tuxdevelop.spring.batch.lightmin.server.fe.service;
 
 import org.assertj.core.api.BDDAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.common.JobParameter;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.common.JobParameters;
 import org.tuxdevelop.spring.batch.lightmin.api.resource.common.ParameterType;
@@ -23,14 +24,15 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JobLauncherFeServiceTest {
 
-    private JobLauncherFeService jobLauncherFeService;
     @Mock
     private RegistrationBean registrationBean;
     @Mock
     private JobServerService jobServerService;
+    @InjectMocks
+    private JobLauncherFeService jobLauncherFeService;
 
     @Test
     public void testGetJobLauncherModel() {
@@ -80,11 +82,4 @@ public class JobLauncherFeServiceTest {
             fail(e.getMessage());
         }
     }
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        this.jobLauncherFeService = new JobLauncherFeService(this.registrationBean, this.jobServerService);
-    }
-
 }
