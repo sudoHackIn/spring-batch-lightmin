@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.BatchConfigurer;
 import org.springframework.batch.core.explore.JobExplorer;
-import org.springframework.batch.core.explore.support.JobExplorerFactoryBean;
 import org.springframework.batch.core.explore.support.MapJobExplorerFactoryBean;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
@@ -28,6 +27,13 @@ import javax.sql.DataSource;
 @Slf4j
 public class BasicSpringBatchLightminBatchConfigurer implements BatchConfigurer, InitializingBean {
 
+    private final TransactionManagerCustomizers transactionManagerCustomizers;
+    private final DataFieldMaxValueIncrementer incrementer = new AbstractDataFieldMaxValueIncrementer() {
+        @Override
+        protected long getNextKey() {
+            throw new IllegalStateException("JobExplorer is read only.");
+        }
+    };
     @Getter
     private JobInstanceDao jobInstanceDao;
     @Getter
@@ -37,33 +43,23 @@ public class BasicSpringBatchLightminBatchConfigurer implements BatchConfigurer,
     private JobRepository jobRepository;
     private JobLauncher jobLauncher;
     private JobExplorer jobExplorer;
-
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
     private PlatformTransactionManager transactionManager;
-
-    private final TransactionManagerCustomizers transactionManagerCustomizers;
-
     private String tablePrefix;
 
-    private final DataFieldMaxValueIncrementer incrementer = new AbstractDataFieldMaxValueIncrementer() {
-        @Override
-        protected long getNextKey() {
-            throw new IllegalStateException("JobExplorer is read only.");
-        }
-    };
-
-    public BasicSpringBatchLightminBatchConfigurer(final TransactionManagerCustomizers transactionManagerCustomizers){
+    public BasicSpringBatchLightminBatchConfigurer(final TransactionManagerCustomizers transactionManagerCustomizers) {
         this.transactionManagerCustomizers = transactionManagerCustomizers;
     }
 
     public BasicSpringBatchLightminBatchConfigurer(final TransactionManagerCustomizers transactionManagerCustomizers,
                                                    final DataSource dataSource,
-                                                   final String tablePrefix){
+                                                   final String tablePrefix) {
         this.setDataSource(dataSource);
         this.tablePrefix = tablePrefix;
         this.transactionManagerCustomizers = transactionManagerCustomizers;
     }
+
     @Override
     public JobRepository getJobRepository() {
         return this.jobRepository;
@@ -75,12 +71,12 @@ public class BasicSpringBatchLightminBatchConfigurer implements BatchConfigurer,
     }
 
     @Override
-    public JobLauncher getJobLauncher()  {
+    public JobLauncher getJobLauncher() {
         return this.jobLauncher;
     }
 
     @Override
-    public JobExplorer getJobExplorer()  {
+    public JobExplorer getJobExplorer() {
         return this.jobExplorer;
     }
 
@@ -107,7 +103,8 @@ public class BasicSpringBatchLightminBatchConfigurer implements BatchConfigurer,
     protected void createJdbcComponents() throws Exception {
 
         // jobExplorer
-        final JobExplorerFactoryBean jobExplorerFactoryBean = new JobExplorerFactoryBean();
+        //specific version of JobExplorerFactoryBean
+        final LightminJobExplorerFactoryBean jobExplorerFactoryBean = new LightminJobExplorerFactoryBean();
         jobExplorerFactoryBean.setTablePrefix(this.tablePrefix);
         jobExplorerFactoryBean.setDataSource(this.dataSource);
         jobExplorerFactoryBean.afterPropertiesSet();
@@ -163,6 +160,7 @@ public class BasicSpringBatchLightminBatchConfigurer implements BatchConfigurer,
 
     /**
      * Determine the isolation level for create* operation of the {@link JobRepository}.
+     *
      * @return the isolation level or {@code null} to use the default
      */
     protected String determineIsolationLevel() {
@@ -171,9 +169,9 @@ public class BasicSpringBatchLightminBatchConfigurer implements BatchConfigurer,
 
     protected PlatformTransactionManager createTransactionManager() {
         final PlatformTransactionManager transactionManager;
-        if(this.dataSource != null) {
+        if (this.dataSource != null) {
             transactionManager = new DataSourceTransactionManager(this.dataSource);
-        }else{
+        } else {
             transactionManager = new ResourcelessTransactionManager();
         }
         return transactionManager;
