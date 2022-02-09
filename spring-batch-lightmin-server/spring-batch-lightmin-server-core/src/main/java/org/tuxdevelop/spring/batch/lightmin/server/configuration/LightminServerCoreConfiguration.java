@@ -7,12 +7,15 @@ import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCusto
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.client.RestTemplate;
 import org.tuxdevelop.spring.batch.lightmin.server.event.listener.OnLightminClientApplicationChangedEventListener;
-import org.tuxdevelop.spring.batch.lightmin.server.repository.*;
+import org.tuxdevelop.spring.batch.lightmin.server.repository.JobExecutionEventRepository;
+import org.tuxdevelop.spring.batch.lightmin.server.repository.JournalRepository;
+import org.tuxdevelop.spring.batch.lightmin.server.repository.LightminApplicationRepository;
 import org.tuxdevelop.spring.batch.lightmin.server.service.EventService;
 import org.tuxdevelop.spring.batch.lightmin.server.service.EventServiceBean;
 import org.tuxdevelop.spring.batch.lightmin.server.service.JournalServiceBean;
@@ -53,14 +56,21 @@ public class LightminServerCoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = "clientRestTemplate")
-    public RestTemplate clientRestTemplate(final LightminServerCoreProperties lightminServerCoreProperties) {
-        return RestTemplateFactory.getRestTemplate(lightminServerCoreProperties);
+    public RestTemplate clientRestTemplate(final LightminServerCoreProperties lightminServerCoreProperties, RestTemplateBuilder builder) {
+        return RestTemplateFactory.getRestTemplate(lightminServerCoreProperties, builder);
     }
 
     @Bean(name = "lightminServerSchedulerTransactionManager")
     @ConditionalOnMissingBean(name = "lightminServerSchedulerTransactionManager")
     public PlatformTransactionManager lightminServerSchedulerTransactionManager() {
         return new ResourcelessTransactionManager();
+    }
+
+    @Bean
+    public OnLightminClientApplicationChangedEventListener onLightminClientApplicationChangedEventListener(
+            final LightminApplicationRepository applicationRepository,
+            final LightminServerCoreProperties properties) {
+        return new OnLightminClientApplicationChangedEventListener(applicationRepository, properties);
     }
 
     @Configuration
@@ -89,30 +99,18 @@ public class LightminServerCoreConfiguration {
         }
     }
 
-    @Bean
-    public OnLightminClientApplicationChangedEventListener onLightminClientApplicationChangedEventListener(
-            final LightminApplicationRepository applicationRepository,
-            final LightminServerCoreProperties properties) {
-        return new OnLightminClientApplicationChangedEventListener(applicationRepository, properties);
-    }
-
     static class RestTemplateFactory {
 
-        private static RestTemplate restTemplate;
+        static RestTemplate getRestTemplate(final LightminServerCoreProperties lightminServerCoreProperties, RestTemplateBuilder builder) {
 
-        static RestTemplate getRestTemplate(final LightminServerCoreProperties lightminServerCoreProperties) {
-
-            if (restTemplate == null) {
-                restTemplate = new RestTemplate();
-            }
             if (lightminServerCoreProperties.getClientUserName() != null) {
-                restTemplate.setInterceptors(
+                builder.interceptors(
                         Collections.singletonList(
                                 new BasicAuthHttpRequestInterceptor(lightminServerCoreProperties.getClientUserName(),
                                         lightminServerCoreProperties.getClientPassword()))
                 );
             }
-            return restTemplate;
+            return builder.build();
         }
     }
 }
