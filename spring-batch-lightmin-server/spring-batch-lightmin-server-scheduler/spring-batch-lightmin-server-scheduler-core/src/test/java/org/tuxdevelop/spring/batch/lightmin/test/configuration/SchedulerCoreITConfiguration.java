@@ -2,6 +2,7 @@ package org.tuxdevelop.spring.batch.lightmin.test.configuration;
 
 import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -16,7 +17,7 @@ import org.tuxdevelop.spring.batch.lightmin.server.scheduler.service.*;
 @Configuration
 @EnableServerSchedulerCore
 @EnableLightminServerCore
-@Import(value = {MetricsAutoConfiguration.class, CompositeMeterRegistryAutoConfiguration.class})
+@Import(value = {MetricsAutoConfiguration.class, CompositeMeterRegistryAutoConfiguration.class, RestTemplateAutoConfiguration.class})
 public class SchedulerCoreITConfiguration {
 
     @Bean
