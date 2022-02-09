@@ -330,12 +330,15 @@
     <!-- distribution management -->
     <distributionManagement>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>AS_UVZ_release</id>
+            <url>https://nexus.sigma.sbrf.ru/nexus/content/repositories/AS_UVZ_release/</url>
+            <uniqueVersion>true</uniqueVersion>
         </repository>
+
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <id>AS_UVZ_snapshot</id>
+            <url>https://nexus.sigma.sbrf.ru/nexus/content/repositories/AS_UVZ_snapshot/</url>
+            <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
 
